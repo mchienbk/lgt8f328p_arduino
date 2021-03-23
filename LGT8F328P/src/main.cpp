@@ -45,23 +45,35 @@ void setup() {
   Serial.begin(9600);
   Serial.println("Starting");
   Origin_search();
-
-
 }
 
 void loop() {
   if (Serial.available() > 0)
   { 
-    // Check finish signal 01
     incomingByte = Serial.read();
-    // Serial.print("Received: ");
-    // Serial.println(incomingByte);
-    if (incomingByte == '0x01')
-    {
-      Serial.println("Done");
-    }
-    else{
-      Serial.println(incomingByte);
+    Serial.print("Received: ");
+    Serial.println(incomingByte);
+    // if (incomingByte == 0x01)
+    // {
+    //   Serial.println("Done");
+    // }
+    // else{
+    //   Serial.println(incomingByte);
+    // }
+    switch(incomingByte){
+      case 0x01:
+
+        break;
+      case 0x02:
+
+
+        break;
+      case 0x03:
+
+
+        break;
+      default:
+        break;
     }
   }
   delay(10);
