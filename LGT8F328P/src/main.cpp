@@ -30,13 +30,14 @@ RAW - |_______| - VCC     */
 #define Y_LIMIT  D9  // x -axis direction 
 
 void GPIO_Init(void);
+void Led_ON(void);
+void Led_OFF(void);
 void Led_blink(int times, int period);
 void Origin_search(void);
 void X_return(void);
 void Y_return(void);
-void X_move(int step, bool direct);
-void Y_move(int step, bool direct);
-
+void X_move(int step, int direct);
+void Y_move(int step, int direct);
 char incomingByte;
 
 void setup() {
@@ -48,11 +49,14 @@ void setup() {
 }
 
 void loop() {
+  Led_OFF();
   if (Serial.available() > 0)
   { 
+    Led_ON();
     incomingByte = Serial.read();
     Serial.print("Received: ");
     Serial.println(incomingByte);
+
     // if (incomingByte == 0x01)
     // {
     //   Serial.println("Done");
@@ -60,18 +64,20 @@ void loop() {
     // else{
     //   Serial.println(incomingByte);
     // }
+
     switch(incomingByte){
       case 0x01:
-
+        X_move(5,0);
         break;
       case 0x02:
-
-
+        X_move(5,1);
         break;
-      case 0x03:
-
-
+      case 0x11:
+        Y_move(5,0);
         break;
+      case 0x12:
+        X_move(5,1);
+        break;        
       default:
         break;
     }
@@ -147,6 +153,9 @@ void X_move(int step, int direct)
     delay(50);
     digitalWrite(X_STP,HIGH);
     delay(50);
+    if(digitalRead(X_HOME)==LOW || digitalRead(X_LIMIT)==LOW){
+      Serial.println("X limit switch was pressed");
+    }
   }
 }
 
@@ -161,6 +170,9 @@ void Y_move(int step, int direct)
     delay(50);
     digitalWrite(Y_STP,HIGH);
     delay(50);
+    if(digitalRead(Y_HOME)==LOW || digitalRead(Y_LIMIT)==LOW){
+      Serial.println("Y limit switch was pressed");
+    }
   }
 }
 
