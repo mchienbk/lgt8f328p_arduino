@@ -66,17 +66,17 @@ void loop() {
     // }
 
     switch(incomingByte){
-      case 0x01:
+      case '1':
         X_move(5,0);
         break;
-      case 0x02:
+      case '2':
         X_move(5,1);
         break;
-      case 0x11:
+      case '3':
         Y_move(5,0);
         break;
-      case 0x12:
-        X_move(5,1);
+      case '4':
+        Y_move(5,1);
         break;        
       default:
         break;
@@ -101,10 +101,10 @@ void GPIO_Init(void){
 
 
 void Led_ON(){
-  digitalWrite(LED_BUILTIN,LOW);
+  digitalWrite(LED_BUILTIN,HIGH);
 } 
 void Led_OFF(){
-  digitalWrite(LED_BUILTIN,HIGH);
+  digitalWrite(LED_BUILTIN,LOW);
 }
 
 void Led_blink(int times, int period){
@@ -157,6 +157,7 @@ void X_move(int step, int direct)
       Serial.println("X limit switch was pressed");
     }
   }
+  Serial.println("X moved");
 }
 
 void Y_move(int step, int direct)
@@ -174,12 +175,15 @@ void Y_move(int step, int direct)
       Serial.println("Y limit switch was pressed");
     }
   }
+  Serial.println("Y moved");
 }
 
 void Origin_search(void)
 {
-  X_return();  X_move(20,HIGH);
-  Y_return();  Y_move(20,HIGH);
+  // X_return();  
+  X_move(20,HIGH);
+  // Y_return();  
+  Y_move(20,HIGH);
 }
 
 
